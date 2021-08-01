@@ -2,6 +2,6 @@ import app from './app';
 
 import '../typeorm';
 
-app.listen(33335, () => {
+app.listen(3333, () => {
   console.log('🚀 Server started on port 3333!');
 });
