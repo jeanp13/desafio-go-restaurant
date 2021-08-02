@@ -6,8 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
   Column,
-  ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
@@ -25,8 +25,8 @@ class Order {
   @Column()
   customer_id: string;
 
-  @ManyToMany(() => OrdersProducts, ordersProducts => ordersProducts.order, {
-    cascade: ['insert', 'update'],
+  @OneToMany(() => OrdersProducts, ordersProducts => ordersProducts.order, {
+    cascade: true,
   })
   @JoinTable()
   order_products: OrdersProducts[];

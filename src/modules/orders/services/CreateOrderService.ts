@@ -9,6 +9,7 @@ import IOrdersRepository from '../repositories/IOrdersRepository';
 
 interface IProduct {
   id: string;
+  price: number;
   quantity: number;
 }
 
@@ -31,7 +32,31 @@ class CreateOrderService {
   ) {}
 
   public async execute({ customer_id, products }: IRequest): Promise<Order> {
-    // TODO
+    const customer = await this.customersRepository.findById(customer_id);
+    if (!customer) {
+      throw new AppError('Customer does not find');
+    }
+    // console.log(products);
+
+    const exists = await this.productsRepository.findAllById(products);
+    const newProducts = products.map(p => {
+      const find = exists.find(prod => prod.id === p.id);
+      if (!find) {
+        throw new AppError('Products does not found');
+      }
+      return {
+        product_id: p.id,
+        price: find.price,
+        quantity: p.quantity,
+      };
+    });
+    console.log(newProducts);
+    const order = await this.ordersRepository.create({
+      customer,
+      products: newProducts,
+    });
+
+    return order;
   }
 }
 

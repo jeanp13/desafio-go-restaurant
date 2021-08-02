@@ -25,12 +25,11 @@ class CreateProductService {
       throw new AppError('This Product is already existed');
     }
 
-    const product = await this.productsRepository.create({
+    const product = this.productsRepository.create({
       name,
       price,
       quantity,
     });
-
     return product;
   }
 }
