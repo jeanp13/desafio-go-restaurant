@@ -30,7 +30,7 @@ export default class CreateOrdersProducts1627690263015
           {
             name: 'price',
             type: 'decimal',
-            precision: 5,
+            precision: 10,
             scale: 2,
           },
           {
@@ -54,10 +54,10 @@ export default class CreateOrdersProducts1627690263015
     await queryRunner.createForeignKey(
       'orders_products',
       new TableForeignKey({
-        name: 'FK_Orders_Products_Product',
-        columnNames: ['product_id'],
+        name: 'FK_Orders_Products_Orders',
+        columnNames: ['order_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'products',
+        referencedTableName: 'orders',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
@@ -66,10 +66,10 @@ export default class CreateOrdersProducts1627690263015
     await queryRunner.createForeignKey(
       'orders_products',
       new TableForeignKey({
-        name: 'FK_Orders_Products_Orders',
+        name: 'FK_Orders_Products_Product',
         columnNames: ['product_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'orders',
+        referencedTableName: 'products',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),

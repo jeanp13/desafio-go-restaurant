@@ -19,10 +19,10 @@ class OrdersRepository implements IOrdersRepository {
 
     const order_products = products.map(p => {
       const op = Object.assign(new OrdersProducts(), {
-        order: orderSaved,
+        order_id: orderSaved.id,
         product_id: p.product_id,
         quantity: p.quantity,
-        price: p.price * p.quantity,
+        price: p.price, //* p.quantity,
       });
       return op;
     });
@@ -32,17 +32,17 @@ class OrdersRepository implements IOrdersRepository {
     //   products,
     // });
 
-    const orderProductSaved = Object.assign(new Order(), {
-      order,
-      customer_id: customer.id,
+    const newOrder = Object.assign(new Order(), {
+      id: order.id,
+      customer,
       order_products,
     });
 
-    // console.log(order_products);
-    const newOrder = await this.ormRepository.save(orderProductSaved);
+    // console.log(newOrder);
+    const orderProductSave = await this.ormRepository.save(newOrder);
     // console.log(newOrder);
 
-    return newOrder;
+    return orderProductSave;
   }
 
   public async findById(id: string): Promise<Order | undefined> {

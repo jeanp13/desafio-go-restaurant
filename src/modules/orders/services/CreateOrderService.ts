@@ -12,6 +12,10 @@ interface IProduct {
   price: number;
   quantity: number;
 }
+interface IUpdateProductsQuantityDTO {
+  id: string;
+  quantity: number;
+}
 
 interface IRequest {
   customer_id: string;
@@ -44,18 +48,32 @@ class CreateOrderService {
       if (!find) {
         throw new AppError('Products does not found');
       }
+      if (find.quantity < p.quantity) {
+        throw new AppError('This Products with insufficient quantities');
+      }
       return {
         product_id: p.id,
         price: find.price,
         quantity: p.quantity,
       };
     });
-    console.log(newProducts);
+    // console.log(newProducts);
     const order = await this.ordersRepository.create({
       customer,
       products: newProducts,
     });
 
+    const productsAfterOrder = products.map(p => {
+      const find = exists.find(prod => prod.id === p.id);
+      if (!find) {
+        throw new AppError('Products does not found');
+      }
+      return {
+        id: p.id,
+        quantity: find?.quantity - p.quantity,
+      } as IUpdateProductsQuantityDTO;
+    });
+    await this.productsRepository.updateQuantity(productsAfterOrder);
     return order;
   }
 }

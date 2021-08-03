@@ -26,16 +26,20 @@ class ProductsRepository implements IProductsRepository {
       price,
       quantity,
     });
-
+    // console.log(product);
     await this.ormRepository.save(product);
+    // console.log(product);
 
     return product;
   }
 
   public async findByName(name: string): Promise<Product | undefined> {
     const product = await this.ormRepository.findOne({
-      where: { name },
+      where: {
+        name,
+      },
     });
+    // console.log(product);
     return product;
   }
 
@@ -52,14 +56,23 @@ class ProductsRepository implements IProductsRepository {
   public async updateQuantity(
     products: IUpdateProductsQuantityDTO[],
   ): Promise<Product[]> {
-    // const productsIds = products.map(product => {
-    //   return product.id;
+    const exists = await this.findAllById(products);
+    exists.forEach(p => {
+      const product = products.find(prod => prod.id === p.id);
+      if (product) {
+        p.quantity -= product.quantity;
+      }
+    });
+    // const productsAfterOrder = products.map(p => {
+    //   const find = exists.find(prod => prod.id === p.id);
+    //   if (!find) {
+    //     find?.quantity = find?.quantity - p.quantity;
+    //   }
+    //   return find;
     // });
-    // const productsFiltered = await this.ormRepository.findByIds(productsIds);
-    // const productsUpdate = products.map(product => {
-    //   const newProduct = productsFiltered.find(p => p.id === product.id);
-    //   newProduct?.quantity = product.quantity || undefined;
-    // });
+    // console.log(productsAfterOrder);
+    await this.ormRepository.save(exists);
+    return exists;
   }
 }
 
