@@ -12,11 +12,11 @@ interface IProduct {
 export default class OrdersController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    console.log(request.params);
+    // console.log(request.params);
     const findOrderService = container.resolve(FindOrderService);
 
     const order = await findOrderService.execute({ id });
-
+    // console.log(order);
     return response.json(order);
   }
 

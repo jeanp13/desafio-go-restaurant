@@ -70,7 +70,7 @@ class ProductsRepository implements IProductsRepository {
     //   }
     //   return find;
     // });
-    // console.log(productsAfterOrder);
+    // console.log(exists);
     await this.ormRepository.save(exists);
     return exists;
   }

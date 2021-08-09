@@ -300,7 +300,7 @@ describe('App', () => {
           expect.objectContaining({
             product_id: product.body.id,
             price: '500.00',
-            quantity: '5',
+            quantity: 5,
           }),
         ]),
       }),

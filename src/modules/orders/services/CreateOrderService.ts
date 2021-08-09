@@ -70,11 +70,21 @@ class CreateOrderService {
       }
       return {
         id: p.id,
-        quantity: find?.quantity - p.quantity,
+        quantity: p.quantity,
+        // quantity: find?.quantity - p.quantity,
       } as IUpdateProductsQuantityDTO;
     });
+    // console.log(productsAfterOrder);
     await this.productsRepository.updateQuantity(productsAfterOrder);
     return order;
+    // return {
+    //   id: order.id,
+    //   order_products: order.order_products,
+    //   customer: order.customer,
+    //   created_at: order.created_at,
+    //   updated_at: order.updated_at,
+    //   customer_id: order.customer_id,
+    // };
   }
 }
 
