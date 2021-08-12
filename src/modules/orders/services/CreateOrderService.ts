@@ -70,7 +70,7 @@ class CreateOrderService {
       }
       return {
         id: p.id,
-        quantity: p.quantity,
+        quantity: Number(p.quantity),
         // quantity: find?.quantity - p.quantity,
       } as IUpdateProductsQuantityDTO;
     });

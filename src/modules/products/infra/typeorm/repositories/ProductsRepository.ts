@@ -60,7 +60,7 @@ class ProductsRepository implements IProductsRepository {
     exists.forEach(p => {
       const product = products.find(prod => prod.id === p.id);
       if (product) {
-        p.quantity -= product.quantity;
+        p.quantity -= Number(product.quantity);
       }
     });
     // const productsAfterOrder = products.map(p => {
